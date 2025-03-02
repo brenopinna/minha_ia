@@ -8,12 +8,12 @@
 #include "include/utils.h"
 #include "include/defines.h"
 
-#define TRAIN
+// #define TRAIN
 
 int main() {
   srand(time(NULL));
 
-  const char *model_name = "models/model4.bin";
+  const char *model_name = "models/99.96.bin";
 
   NeuralNetwork nn;
 
