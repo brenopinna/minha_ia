@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.css": "css",
+    "*.js": "javascript",
+    "*.sass": "sass",
+    ".env": "properties",
+    "*.stlx": "setlx",
+    "*.c": "c",
+    "ia.h": "c"
+  }
+}

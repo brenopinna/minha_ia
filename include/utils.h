@@ -28,6 +28,16 @@ static double sigmoid_derivative(double x) {
   return x * (1 - x);
 }
 
+static double ReLU(double x) {
+  if (x > 0) return x;
+  return 0;
+}
+
+static double ReLU_derivative(double x) {
+  if (x > 0) return 1;
+  return 0;
+}
+
 static void print_model(NeuralNetwork *nn) {
   double w11 = nn->hidden[0].weights[0];
   double w12 = nn->hidden[0].weights[1];
@@ -54,11 +64,28 @@ static void print_model(NeuralNetwork *nn) {
 static void load_training_data(double training_data[TRAINING_DATA_SIZE][3]) {
   int filled = 0;
 
-  for (int x1 = 0; x1 < MAX_NUM_SIZE; x1++) {
-    for (int x2 = 0; x2 < MAX_NUM_SIZE; x2++) {
+  for (int x1 = 0; x1 <= MAX_NUM_SIZE; x1++) {
+    for (int x2 = 0; x2 <= MAX_NUM_SIZE; x2++) {
       training_data[filled][0] = x1;
       training_data[filled][1] = x2;
       training_data[filled++][2] = x1 == x2 ? 1 : 0;
     }
   }
+}
+
+static void shuffle_training_data(double training_data[TRAINING_DATA_SIZE][3]) {
+  for (int i = TRAINING_DATA_SIZE - 1; i > 0; i--) {
+    int j = rand() % (i + 1);  // Gera um índice aleatório entre 0 e i
+
+    // Troca cada uma das 3 colunas entre training_data[i] e training_data[j]
+    for (int k = 0; k < 3; k++) {
+      double temp = training_data[i][k];
+      training_data[i][k] = training_data[j][k];
+      training_data[j][k] = temp;
+    }
+  }
+}
+
+static double normalize(double x) {
+  return x / MAX_NUM_SIZE;
 }
