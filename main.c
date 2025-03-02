@@ -8,6 +8,8 @@
 #include "include/utils.h"
 #include "include/defines.h"
 
+// Se essa variavel estiver definida, seu modelo ser CRIADO ou SUBSTITUIDO por outro treinado.
+// para apenas usar um modelo sem treinar, comente-a
 // #define TRAIN
 
 int main() {
