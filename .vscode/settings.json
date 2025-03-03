@@ -6,6 +6,7 @@
     ".env": "properties",
     "*.stlx": "setlx",
     "*.c": "c",
-    "ia.h": "c"
+    "ia.h": "c",
+    "defines.h": "c"
   }
 }

@@ -44,26 +44,24 @@ static double forward(NeuralNetwork *nn, double x1, double x2, double *h1, doubl
   return sigmoid(neuron_output(&nn->output, *h1, *h2));
 }
 
-static double backpropagation(NeuralNetwork *nn, double x1, double x2, double target) {
+static double backpropagation(NeuralNetwork *nn, double x1, double x2, double target,
+                              double *grad_w11, double *grad_w12, double *grad_b1,
+                              double *grad_w21, double *grad_22, double *grad_b2,
+                              double *grad_wo1, double *grad_wo2, double *grad_bo
+) {
   double z1, z2, h1, h2, output;
 
   output = forward(nn, x1, x2, &h1, &h2, &z1, &z2);
 
-  double delta_output = (output - target) * sigmoid_derivative(output);
+  double weight = (target == 1) ? 2.0 : 1.0;
+
+  double delta_output = weight * (output - target) * sigmoid_derivative(output);
   double delta_h1 = delta_output * nn->output.weights[0] * ReLU_derivative(z1);
   double delta_h2 = delta_output * nn->output.weights[1] * ReLU_derivative(z2);
 
-  nn->output.weights[0] -= learning_rate * delta_output * h1;
-  nn->output.weights[1] -= learning_rate * delta_output * h2;
-  nn->output.bias -= learning_rate * delta_output;
-
-  nn->hidden[0].weights[0] -= learning_rate * delta_h1 * x1;
-  nn->hidden[0].weights[1] -= learning_rate * delta_h1 * x2;
-  nn->hidden[0].bias -= learning_rate * delta_h1;
-
-  nn->hidden[1].weights[0] -= learning_rate * delta_h2 * x1;
-  nn->hidden[1].weights[1] -= learning_rate * delta_h2 * x2;
-  nn->hidden[1].bias -= learning_rate * delta_h2;
+  *grad_w11 += delta_h1 * x1; *grad_w12 += delta_h1 * x2; *grad_b1 += delta_h1;
+  *grad_w21 += delta_h2 * x1; *grad_22 += delta_h2 * x2; *grad_b2 += delta_h2;
+  *grad_wo1 += delta_output * h1; *grad_wo2 += delta_output * h2; *grad_bo += delta_output;
 
   return output;
 }
